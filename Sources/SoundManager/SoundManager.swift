@@ -94,14 +94,14 @@ open class SoundManager: NSObject, AVAudioPlayerDelegate {
             return
         }
         
-        if let backgroundMusic = backgroundMusic {
+        if let backgroundMusic {
             if backgroundMusic.isPlaying {
                 stopBackgroundMusic()
             }
         }
         
         let path = Bundle.main.path(forResource: song, ofType:nil)
-        if let path = path {
+        if let path {
             let url = URL(fileURLWithPath: path)
             
             do {
@@ -118,6 +118,42 @@ open class SoundManager: NSObject, AVAudioPlayerDelegate {
         }
     }
     
+    /// Starts playing the background music for the given audio file path. If the sound is already playing, it will not be restarted. The sound provided will loop forever until `stopBackgroundMusic()` is called.
+    /// - Parameter path: The Bundle Resource Path to the audio file to play.
+    public func startBackgroundMusic(path:String?) {
+        
+        guard shouldPlayBackgroundMusic else {
+            return
+        }
+        
+        guard let path else {
+            return
+        }
+        
+        // Is the song already playing?
+        guard currentBackgroundMusic != path else {
+            return
+        }
+        
+        if let backgroundMusic {
+            if backgroundMusic.isPlaying {
+                stopBackgroundMusic()
+            }
+        }
+        
+        let url = URL(fileURLWithPath: path)
+        
+        do {
+            currentBackgroundMusic = path
+            backgroundMusic = try AVAudioPlayer(contentsOf: url)
+            backgroundMusic?.volume = 0.30
+            backgroundMusic?.numberOfLoops = -1
+            backgroundMusic?.play()
+        } catch {
+            Log.error(subsystem: "SoundManager", category: "startBackgroundMusic", "Unable to play background music: \(error)")
+        }
+    }
+    
     /// This is the room specific background music. The sound provided will loop forever until `stopBackgroundSound()` is called.
     /// - Parameter sound: The sound (with extension) to be played.
     public func playBackgroundSound(sound:String) {
@@ -130,14 +166,14 @@ open class SoundManager: NSObject, AVAudioPlayerDelegate {
             return
         }
         
-        if let backgroundSound = backgroundSound {
+        if let backgroundSound {
             if backgroundSound.isPlaying {
                 stopBackgroundSound()
             }
         }
         
         let path = Bundle.main.path(forResource: sound, ofType:nil)
-        if let path = path {
+        if let path {
             let url = URL(fileURLWithPath: path)
             
             do {
@@ -154,6 +190,41 @@ open class SoundManager: NSObject, AVAudioPlayerDelegate {
         }
     }
     
+    /// This is the room specific background music. The sound provided will loop forever until `stopBackgroundSound()` is called.
+    /// - Parameter path: The Bundle Resource Path to the audio file to play.
+    public func playBackgroundSound(path:String?) {
+        
+        guard shouldPlayBackgroundSounds else {
+            return
+        }
+        
+        guard let path else {
+            return
+        }
+        
+        guard currentBackgroundSound != path else {
+            return
+        }
+        
+        if let backgroundSound {
+            if backgroundSound.isPlaying {
+                stopBackgroundSound()
+            }
+        }
+        
+        let url = URL(fileURLWithPath: path)
+        
+        do {
+            currentBackgroundSound = path
+            backgroundSound = try AVAudioPlayer(contentsOf: url)
+            backgroundSound?.volume = 0.30
+            backgroundSound?.numberOfLoops = -1
+            backgroundSound?.play()
+        } catch {
+            Log.error(subsystem: "SoundManager", category: "playBackgroundSound", "Unable to play background music: \(error)")
+        }
+    }
+    
     /// This is the room specific background weather sound. The sound provided will loop forever until `stopBackgroundWeather()` is called.
     /// - Parameter sound: The sound (with extension) to be played.
     public func playBackgroundWeather(sound:String) {
@@ -166,14 +237,14 @@ open class SoundManager: NSObject, AVAudioPlayerDelegate {
             return
         }
         
-        if let backgroundWeather = backgroundWeather {
+        if let backgroundWeather {
             if backgroundWeather.isPlaying {
                 stopBackgroundWeather()
             }
         }
         
         let path = Bundle.main.path(forResource: sound, ofType:nil)
-        if let path = path {
+        if let path {
             let url = URL(fileURLWithPath: path)
             
             do {
@@ -187,6 +258,41 @@ open class SoundManager: NSObject, AVAudioPlayerDelegate {
             }
         } else {
             Log.error(subsystem: "SoundManager", category: "playBackgroundWeather", "Unable find background weather: \(sound)")
+        }
+    }
+    
+    /// This is the room specific background weather sound. The sound provided will loop forever until `stopBackgroundWeather()` is called.
+    /// - Parameter path: The Bundle Resource Path to the audio file to play.
+    public func playBackgroundWeather(path:String?) {
+        
+        guard shouldPlayBackgroundSounds else {
+            return
+        }
+        
+        guard let path else {
+            return
+        }
+        
+        guard currentBackgroundWeather != path else {
+            return
+        }
+        
+        if let backgroundWeather {
+            if backgroundWeather.isPlaying {
+                stopBackgroundWeather()
+            }
+        }
+        
+        let url = URL(fileURLWithPath: path)
+        
+        do {
+            currentBackgroundWeather = path
+            backgroundWeather = try AVAudioPlayer(contentsOf: url)
+            backgroundWeather?.volume = 0.30
+            backgroundWeather?.numberOfLoops = -1
+            backgroundWeather?.play()
+        } catch {
+            Log.error(subsystem: "SoundManager", category: "playBackgroundWeather", "Unable to play background weather: \(error)")
         }
     }
     
@@ -238,14 +344,14 @@ open class SoundManager: NSObject, AVAudioPlayerDelegate {
     public func playSoundEffect(sound:String, channel:SoundEffectChannel = .channel01, didFinishPlaying:FinishedPlaying? = nil) {
         
         guard shouldPlaySoundEffects else {
-            if let didFinishPlaying = didFinishPlaying {
+            if let didFinishPlaying {
                 didFinishPlaying()
             }
             return
         }
         
         guard channel != .all else {
-            if let didFinishPlaying = didFinishPlaying {
+            if let didFinishPlaying {
                 didFinishPlaying()
             }
             return
@@ -266,6 +372,44 @@ open class SoundManager: NSObject, AVAudioPlayerDelegate {
             }
         } else {
             Log.error(subsystem: "SoundManager", category: "playSoundEffect", "Unable find sound effect: \(sound)")
+        }
+    }
+    
+    /// Plays the given sound effect on the given effect channel.
+    /// - Parameters:
+    ///   - path: The Bundle Resource Path to the audio file to play.
+    ///   - channel: The effect channel to play the song on. The default is `channel01`.
+    ///   - didFinishPlaying: The closure that will be called when the sound finishes playing.
+    public func playSoundEffect(path:String?, channel:SoundEffectChannel = .channel01, didFinishPlaying:FinishedPlaying? = nil) {
+        
+        guard shouldPlaySoundEffects else {
+            if let didFinishPlaying = didFinishPlaying {
+                didFinishPlaying()
+            }
+            return
+        }
+        
+        guard channel != .all else {
+            if let didFinishPlaying = didFinishPlaying {
+                didFinishPlaying()
+            }
+            return
+        }
+        
+        guard let path else {
+            return
+        }
+        
+        let url = URL(fileURLWithPath: path)
+        
+        do {
+            let n = channel.rawValue
+            soundEffectChannels[n].soundEffectDelegate = SoundManagerDelegate(action: didFinishPlaying)
+            soundEffectChannels[n].soundEffect = try AVAudioPlayer(contentsOf: url)
+            soundEffectChannels[n].soundEffect?.delegate = soundEffectChannels[n].soundEffectDelegate
+            soundEffectChannels[n].soundEffect?.play()
+        } catch {
+            Log.error(subsystem: "SoundManager", category: "playSoundEffect", "Unable to play sound effect: \(error)")
         }
     }
 }
