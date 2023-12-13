@@ -1,8 +1,22 @@
 # Sound Manager
 
-![](https://img.shields.io/badge/license-MIT-green) ![](https://img.shields.io/badge/maintained%3F-Yes-green) ![](https://img.shields.io/badge/swift-5.4-green) ![](https://img.shields.io/badge/iOS-13.0-red) ![](https://img.shields.io/badge/macOS-10.15-red) ![](https://img.shields.io/badge/tvOS-13.0-red) ![](https://img.shields.io/badge/watchOS-6.0-red) ![](https://img.shields.io/badge/release-v1.0.8-blue)
+![](https://img.shields.io/badge/license-MIT-green) ![](https://img.shields.io/badge/maintained%3F-Yes-green) ![](https://img.shields.io/badge/swift-5.4-green) ![](https://img.shields.io/badge/iOS-17.0-red) ![](https://img.shields.io/badge/macOS-14.0-red) ![](https://img.shields.io/badge/tvOS-17.0-red) ![](https://img.shields.io/badge/watchOS-10.0-red) ![](https://img.shields.io/badge/dependency-LogManager-orange)
 
 `SoundManager` provides a simply way to play sounds in an App.
+
+## Installation
+
+**Swift Package Manager** (Xcode 11 and above)
+
+1. In Xcode, select the **File** > **Add Package Dependency…** menu item.
+2. Paste `https://github.com/Appracatappra/SoundManager.git` in the dialog box.
+3. Follow the Xcode's instruction to complete the installation.
+
+> Why not CocoaPods, or Carthage, or etc?
+
+Supporting multiple dependency managers makes maintaining a library exponentially more complicated and time consuming.
+
+Since, the **Swift Package Manager** is integrated with Xcode 11 (and greater), it's the easiest choice to support going further.
 
 ## Overview
 
@@ -36,4 +50,8 @@ You can provide a UI in your App to allow the end user to control their sound pr
 * **playSoundEffect** - `public func playSoundEffect(sound:String, channel:SoundEffectChannel = .channel01, didFinishPlaying:FinishedPlaying? = nil)` Plays the given sound effect on the given channel. If provided a callback handler, you'll be informed when the sounds stops playing.
 * **stopSoundEffect** - `public func stopSoundEffect(channel:SoundEffectChannel = .channel01)` Stops playing the sound effect on the given channel.
 
-**NOTE:** Include any **Music** or **Sound** file in your App's Bundle. When calling a method in the `SoundManager` include the extension of the sound file as well, for example: `MySound.mp3`. Also note that sounds are case sensitive.
+> **NOTE:** Include any **Music** or **Sound** file in your App's Bundle. When calling a method in the `SoundManager` include the extension of the sound file as well, for example: `MySound.mp3`. Also note that sounds are case sensitive.
+
+# Documentation
+
+The **Package** includes full **DocC Documentation** for all features.

@@ -34,5 +34,5 @@ You can provide a UI in your App to allow the end user to control their sound pr
 * **playSoundEffect** - `public func playSoundEffect(sound:String, channel:SoundEffectChannel = .channel01, didFinishPlaying:FinishedPlaying? = nil)` Plays the given sound effect on the given channel. If provided a callback handler, you'll be informed when the sounds stops playing.
 * **stopSoundEffect** - `public func stopSoundEffect(channel:SoundEffectChannel = .channel01)` Stops playing the sound effect on the given channel.
 
-**NOTE:** Include any **Music** or **Sound** file in your App's Bundle. When calling a method in the `SoundManager` include the extension of the sound file as well, for example: `MySound.mp3`. Also note that sounds are case sensitive.
+> Include any **Music** or **Sound** file in your App's Bundle. When calling a method in the `SoundManager` include the extension of the sound file as well, for example: `MySound.mp3`. Also note that sounds are case sensitive.
 
